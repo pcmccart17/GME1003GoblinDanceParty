@@ -21,7 +21,8 @@ namespace GME1003GoblinDanceParty
         private List<float> _starsScale; //declaring a scale list
         private List<Color> _starsColors; //declaring a color (colour) list
 
-        private Texture2D _starSprite;  //the sprite image for our star
+        private Texture2D _epicstar;  //the sprite image for our star(now a lightsaber)
+        private Texture2D _starwarsbackground; //the sprite for the background
 
         private Random _rng;            //for all our random number needs
         private Color _starColor;       //let's have fun with colour!!
@@ -74,7 +75,7 @@ namespace GME1003GoblinDanceParty
 
            
 
-            //ToDo: List of Colors
+            // List of Colors
             for (int i = 0; i < _numStars; i++)
             {
                 _starsColors.Add(new Color(
@@ -86,7 +87,7 @@ namespace GME1003GoblinDanceParty
             // List of scale values
             for (int i =0; i < _numStars;i++)
             {
-                _starsScale.Add(_rng.Next(50, 100) / 200f);
+                _starsScale.Add(_rng.Next(3, 12) / 100f);
             }
 
             // List of transparency values
@@ -109,8 +110,10 @@ namespace GME1003GoblinDanceParty
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //load out star sprite
-            _starSprite = Content.Load<Texture2D>("starSprite");
+            //load our star(lightsaber) sprite
+            _epicstar = Content.Load<Texture2D>("epicstar");
+            //load our background sprite
+            _starwarsbackground = Content.Load<Texture2D>("starwarsbackground");
 
 
             //***This is for the goblin. Ignore it for now.
@@ -143,16 +146,26 @@ namespace GME1003GoblinDanceParty
 
             //it would be great to have a background image here! 
             //you could make that happen with a single Draw statement.
+            
+            int extra = 100; // how much bigger in pixels
+            _spriteBatch.Draw(_starwarsbackground,
+                new Rectangle(
+                    -extra / 2, 
+                    -extra / 2,
+                    _graphics.PreferredBackBufferWidth + extra,
+                    _graphics.PreferredBackBufferHeight + extra),
+                Color.White);
+
 
             //this is where we draw the stars...
             for (int i = 0; i < _numStars; i++) 
             {
-                _spriteBatch.Draw(_starSprite,
+                _spriteBatch.Draw(_epicstar,
                     new Vector2(_starsX[i], _starsY[i]),    //set the star position
                     null,                                   //ignore this
                     _starsColors[i] * _starsTransparency[i],         //set colour and transparency
                     _starsRotations[i],                          //set rotation
-                    new Vector2(_starSprite.Width / 2, _starSprite.Height / 2), //ignore this
+                    new Vector2(_epicstar.Width / 2, _epicstar.Height / 2), //ignore this
                     new Vector2(_starsScale[i], _starsScale[i]),    //set scale (same number 2x)
                     SpriteEffects.None,                     //ignore this
                     0f);                                    //ignore this
